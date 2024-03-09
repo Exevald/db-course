@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# This script is created for running MySQL commands in docker container
+# Usage: bash run-task <taskFile.sql> <outputFile.txt>
+# Script result in output file
+
+set -o errexit
+
+PLATFORM_DIR=$(dirname "$(dirname "$(readlink -f "$0")")")
+SCRIPTS_DIR="$PLATFORM_DIR"/data/mysql
+
+TASK_FILENAME=${1:-"task1.sql"}
+OUTPUT_FILENAME=${2:-"output.txt"}
+
+docker exec -i aviation-mysql-db mysql -uroot -p123r bookings < "$SCRIPTS_DIR"/"$TASK_FILENAME" > "$OUTPUT_FILENAME"
+
+echo Task passed
