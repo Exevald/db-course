@@ -6,7 +6,8 @@ WHERE flight_no LIKE '%488'\G
 -- 2. Выбрать всю информацию о рейсах (flights), для которых аэропорт Краснодар является пунктом отправления либо прибытия
 SELECT *
 FROM flights
-WHERE departure_airport = 'KRR' OR arrival_airport = 'KRR'\G
+WHERE departure_airport = 'KRR'
+   OR arrival_airport = 'KRR'\G
 
 -- 3. Выбрать всю информацию о рейсах (flights) на самолёте Сухой Суперджет-100, для которых аэропорт Чебоксар является пунктом отправления либо прибытия
 SELECT *
@@ -24,7 +25,7 @@ SELECT t.passenger_name, t.contact_data
 FROM tickets t
          INNER JOIN bookings b ON t.book_ref = b.book_ref
 WHERE b.total_amount = (SELECT MAX(total_amount)
-                        FROM bookings)\G
+                        FROM bookings) \G
 
 -- 6. Выбрать идентификаторы самолётов, в которых есть посадочные места с редким классом 'Comfort' (вместо более привычных 'Economy' / 'Business')
 SELECT DISTINCT a.aircraft_code
