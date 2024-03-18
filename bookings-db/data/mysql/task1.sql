@@ -23,7 +23,8 @@ WHERE (aircraft_code = 'SU9')
 SELECT book_ref,
        total_amount
 FROM bookings
-ORDER BY total_amount DESC LIMIT 10
+ORDER BY total_amount DESC
+LIMIT 10
 ;
 
 -- 5. Выбрать имена и контактные данные всех пассажиров, указанных в самом дорогостоящем бронировании
