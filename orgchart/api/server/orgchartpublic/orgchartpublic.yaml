@@ -1,0 +1,395 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Orgchart public API
+  x-api-identifier: Orgchart
+paths:
+  /api/v1/orgchart/branch/list:
+    get:
+      operationId: ListBranches
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBranchesResponseData'
+          description: OK
+
+  /api/v1/orgchart/branch/{branchId}:
+    get:
+      operationId: GetBranchInfo
+      parameters:
+        - in: path
+          name: branchId
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBranchInfoResponseData'
+          description: OK
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+
+  /api/v1/orgchart/employee/{employeeId}:
+    get:
+      operationId: GetEmployeeInfo
+      parameters:
+        - in: path
+          name: employeeId
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: OK
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+
+  /api/v1/orgchart/branch/create:
+    post:
+      operationId: CreateBranch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBranchRequestData'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBranchResponseData'
+          description: Successfully created
+        '400':
+          $ref: '#/components/responses/badRequest'
+
+  /api/v1/orgchart/employee/create:
+    post:
+      operationId: CreateEmployee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmployeeRequestData'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmployeeResponseData'
+          description: Successfully created
+
+  /api/v1/orgchart/branch/{branchId}/update:
+    patch:
+      operationId: UpdateBranchInfo
+      parameters:
+        - in: path
+          name: branchId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Branch'
+      responses:
+        '200':
+          description: Successfully updated
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+
+  /api/v1/orgchart/employee/{employeeId}/update:
+    patch:
+      operationId: UpdateEmployeeInfo
+      parameters:
+        - in: path
+          name: employeeId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: Successfully updated
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+
+  /api/v1/orgchart/branch/{branchId}/delete:
+    delete:
+      operationId: DeleteBranch
+      parameters:
+        - in: path
+          name: branchId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully deleted
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+
+  /api/v1/orgchart/employee/{employeeId}/delete:
+    delete:
+      operationId: DeleteEmployee
+      parameters:
+        - in: path
+          name: employeeId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully deleted
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+
+components:
+  responses:
+    badRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/badRequestResponseData'
+      description: BadRequest
+    notFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/notFoundResponseData'
+      description: NotFound
+  schemas:
+    badRequestResponseData:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - InvalidCity
+            - InvalidAddress
+            - InvalidName
+            - InvalidJobTitle
+            - InvalidPhone
+            - InvalidEmail
+            - InvalidGender
+            - InvalidDate
+            - InvalidComment
+            - InvalidBranchId
+            - InvalidEmployeeId
+        message:
+          type: string
+      required:
+        - code
+        - message
+    notFoundResponseData:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - BranchNotFound
+            - EmployeeNotFound
+        message:
+          type: string
+      required:
+        - code
+        - message
+    ListBranchesResponseData:
+      type: object
+      properties:
+        branches:
+          $ref: '#/components/schemas/Branches'
+      required:
+        - branches
+    GetBranchInfoResponseData:
+      type: object
+      properties:
+        city:
+          type: string
+        address:
+          type: string
+        employees:
+          $ref: '#/components/schemas/Employees'
+    CreateBranchRequestData:
+      type: object
+      properties:
+        city:
+          type: string
+        address:
+          type: string
+      required:
+        - city
+        - address
+    CreateEmployeeRequestData:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        jobTitle:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        gender:
+          type: integer
+        birthDate:
+          type: string
+          format: date
+        hireDate:
+          type: string
+          format: date
+        comment:
+          type: string
+        photoPath:
+          type: string
+      required:
+        - firstName
+        - lastName
+        - middleName
+        - jobTitle
+        - phone
+        - email
+        - gender
+        - birthDate
+        - hireDate
+        - comment
+    CreateBranchResponseData:
+      type: object
+      properties:
+        branchId:
+          type: integer
+          format: int64
+      required:
+        - branchId
+    CreateEmployeeResponseData:
+      type: object
+      properties:
+        employeeId:
+          type: integer
+          format: int64
+      required:
+        - employeeId
+    Branch:
+      type: object
+      properties:
+        city:
+          type: string
+        address:
+          type: string
+      required:
+        - city
+        - address
+    Employee:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        jobTitle:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        gender:
+          type: integer
+        birthDate:
+          type: string
+          format: date
+        hireDate:
+          type: string
+          format: date
+        comment:
+          type: string
+        photoPath:
+          type: string
+      required:
+        - firstName
+        - lastName
+        - middleName
+        - jobTitle
+        - phone
+        - email
+        - gender
+        - birthDate
+        - hireDate
+        - comment
+    BranchPreview:
+      type: object
+      properties:
+        city:
+          type: string
+        address:
+          type: string
+        countOfEmployees:
+          type: integer
+          format: int64
+      required:
+        - city
+        - address
+        - countOfEmployees
+    EmployeePreview:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        jobTitle:
+          type: string
+      required:
+        - firstName
+        - lastName
+        - middleName
+        - jobTitle
+    Branches:
+      type: array
+      items:
+        $ref: '#/components/schemas/BranchPreview'
+    Employees:
+      type: array
+      items:
+        $ref: '#/components/schemas/EmployeePreview'

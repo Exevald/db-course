@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  orgchart-dev:
+    image: orgchart
+    container_name: orgchart-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8881:8081" # GRPC API port
+      - "8882:8082" # GRPC-Gateway REST API port
+    environment:
+      ORGCHART_DB_HOST: orgchart-db-dev:3306
+      ORGCHART_DB_NAME: orgchart
+      ORGCHART_DB_USER: orgchart
+      ORGCHART_DB_PASSWORD: B-MAbcW!SK
+      # Coupled with MySQL 'max_connections' option: must be 'max_connections - 5'
+      ORGCHART_DB_MAX_CONN: 5
+    depends_on:
+      - orgchart-db-dev
+  orgchart-db-dev:
+    image: mysql:8.0.32
+    container_name: orgchart-db-dev
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: orgchart
+      MYSQL_USER: orgchart
+      MYSQL_PASSWORD: LxilKD9Pbe
+    volumes:
+      - "orgchart-db-dev-data:/var/lib/mysql"
+      - "${PWD}/data/mysql/config/:/etc/my.cnf.d"
+
+
+volumes:
+  orgchart-db-dev-data:
