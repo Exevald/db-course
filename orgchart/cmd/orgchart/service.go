@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
+	"github.com/gorilla/mux"
 	stdio "io"
 	"net/http"
-
 	"orgchart/pkg/orgchart/infrastructure"
+	"time"
 
-	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
 )
@@ -31,18 +31,30 @@ func runService(
 	config *config,
 	dependencyContainer *infrastructure.DependencyContainer,
 ) error {
-	return nil
+	return serveHTTP(config)
 }
 
 func serveHTTP(
 	config *config,
-) {
-	router := mux.NewRouter()
+) error {
+	var httpServer *http.Server
 
+	//publicAPIHandler := orgchartpublic.NewStrictHandler(api, []orgchartpublic.StrictMiddlewareFunc{})
+	router := mux.NewRouter()
 	router.HandleFunc("/resilience/ready", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		_, _ = stdio.WriteString(w, http.StatusText(http.StatusOK))
 	}).Methods(http.MethodGet)
+	//
+	//router.PathPrefix("/api/v1/orgchart").Handler(orgchartpublic.Handler(publicAPIHandler))
+	//
+	httpServer = &http.Server{
+		Handler:           router,
+		Addr:              config.Service.ServeRESTAddress,
+		ReadHeaderTimeout: 10 * time.Second,
+		ReadTimeout:       time.Hour,
+		WriteTimeout:      time.Hour,
+	}
 
-	//router.PathPrefix("/").Handler(func(w http.ResponseWriter, _ *http.Request) {})
+	return httpServer.ListenAndServe()
 }

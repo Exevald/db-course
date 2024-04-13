@@ -30,18 +30,22 @@ type Employee interface {
 	LastName() string
 	MiddleName() string
 	JobTitle() string
+	Phone() string
 	Email() string
 	Gender() Gender
 	BirthDate() time.Time
 	HireDate() time.Time
+	Comment() string
+	AvatarPath() string
 }
 
 func NewEmployee(
 	id uint64,
 	firstName,
 	lastName,
-	middleName string,
+	middleName,
 	jobTitle,
+	phone,
 	email string,
 	gender Gender,
 	birthDate,
@@ -58,7 +62,15 @@ func NewEmployee(
 	if email == "" {
 		return nil, errors.WithStack(ErrInvalidEmail)
 	}
-	// TODO: Add check for valid gender, age and hire date
+	if !isGenderValid(gender) {
+		return nil, errors.WithStack(ErrInvalidGender)
+	}
+	if !isDateValid(birthDate) {
+		return nil, errors.WithStack(ErrInvalidAge)
+	}
+	if !isDateValid(hireDate) || hireDate.Before(birthDate) {
+		return nil, errors.WithStack(ErrInvalidHireDate)
+	}
 
 	return &employee{
 		employeeID: id,
@@ -66,6 +78,7 @@ func NewEmployee(
 		lastName:   lastName,
 		middleName: middleName,
 		jobTitle:   jobTitle,
+		phone:      phone,
 		email:      email,
 		gender:     gender,
 		birthDate:  birthDate,
@@ -81,6 +94,7 @@ type employee struct {
 	lastName   string
 	middleName string
 	jobTitle   string
+	phone      string
 	email      string
 	gender     Gender
 	birthDate  time.Time
@@ -125,8 +139,37 @@ func (e employee) HireDate() time.Time {
 	return e.hireDate
 }
 
+func (e employee) Phone() string {
+	return e.phone
+}
+
+func (e employee) Comment() string {
+	return e.comment
+}
+
+func (e employee) AvatarPath() string {
+	return e.avatarPath
+}
+
 type EmployeeStorage interface {
-	Find(ctx context.Context, id uint64) (employee, error)
-	Store(ctx context.Context, employee employee) error
-	Delete(ctx context.Context, id uint64) error
+	Find(context context.Context, id uint64) (Employee, error)
+	Store(context context.Context, employee Employee) error
+	Update(context context.Context, employee Employee) error
+	Delete(context context.Context, id uint64) error
+	FindBranchEmployees(context.Context, uint64) ([]Employee, error)
+}
+
+func isGenderValid(gender Gender) bool {
+	if gender == Male || gender == Female {
+		return true
+	}
+	return false
+}
+
+func isDateValid(date time.Time) bool {
+	now := time.Now()
+	if date.After(now) || date.IsZero() {
+		return false
+	}
+	return true
 }

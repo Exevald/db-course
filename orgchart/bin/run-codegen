@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+cd ./api/server/orgchartpublic/
+oapi-codegen -alias-types -generate types,client,chi-server,strict-server,spec orgchartpublic.yaml > orgchartpublic.yaml.gen.go

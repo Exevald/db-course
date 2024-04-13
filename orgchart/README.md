@@ -1,4 +1,4 @@
-# Микросервис orgchart
+# Сервис orgchart
 
 ## Предназначение
 Просмотр и редактирование данных об оргструктуре компании «Дороги и ямы».
@@ -10,6 +10,7 @@
 
 Для запуска сервиса нужно выполнить команды:
 ```bash
+bash bin/run-codegen
 brewkit build
 docker-compose up --build -d
 docker-compose down

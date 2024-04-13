@@ -14,7 +14,7 @@ services:
       ORGCHART_DB_HOST: orgchart-db-dev:3306
       ORGCHART_DB_NAME: orgchart
       ORGCHART_DB_USER: orgchart
-      ORGCHART_DB_PASSWORD: B-MAbcW!SK
+      ORGCHART_DB_PASSWORD: LxilKD9Pbe
       # Coupled with MySQL 'max_connections' option: must be 'max_connections - 5'
       ORGCHART_DB_MAX_CONN: 5
     depends_on:

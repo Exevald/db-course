@@ -64,7 +64,8 @@ func (b branch) Employees() []employee {
 }
 
 type BranchStorage interface {
-	Find(ctx context.Context, id uint64) (branch, error)
-	Store(ctx context.Context, branch branch) error
-	Delete(ctx context.Context, id uint64) error
+	Find(context context.Context, id uint64) (Branch, error)
+	Store(context context.Context, branch Branch) error
+	Update(context context.Context, branch Branch) error
+	Delete(context context.Context, id uint64) error
 }

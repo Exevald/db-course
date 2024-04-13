@@ -17,6 +17,7 @@ local gosources = [
     "go.sum",
     "cmd",
     "pkg",
+    "api",
 ];
 
 {
