@@ -2,59 +2,81 @@ package main
 
 import (
 	"context"
-	"github.com/gorilla/mux"
 	stdio "io"
 	"net/http"
-	"orgchart/pkg/orgchart/infrastructure"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
+
+	"orgchart/api/server/orgchartpublic"
+	"orgchart/pkg/orgchart/common/server"
+	"orgchart/pkg/orgchart/infrastructure"
+	"orgchart/pkg/orgchart/infrastructure/transport/common"
+	"orgchart/pkg/orgchart/infrastructure/transport/publicapi"
 )
 
-func service(config *config) *cli.Command {
+func service(config *config, logger *log.Logger) *cli.Command {
 	return &cli.Command{
 		Name:  "service",
 		Usage: "Runs application as http server",
 		Action: func(c *cli.Context) error {
-			dependencyContainer, err := newDependencyContainer()
+			dependencyContainer, err := newDependencyContainer(config)
 			if err != nil {
 				return errors.Wrap(err, "could not create dependency container")
 			}
-			return runService(c.Context, config, dependencyContainer)
+			return runService(config, dependencyContainer, logger)
 		},
 	}
 }
 
 func runService(
-	ctx context.Context,
 	config *config,
 	dependencyContainer *infrastructure.DependencyContainer,
+	logger *log.Logger,
 ) error {
-	return serveHTTP(config)
+	api := publicapi.NewPublicAPI(
+		dependencyContainer.BranchService(),
+		dependencyContainer.EmployeeService(),
+	)
+	errChan := make(chan struct{})
+	serverHub := server.NewHub(errChan)
+
+	serveHTTP(config, serverHub, api, logger)
+	return serverHub.Wait()
 }
 
 func serveHTTP(
 	config *config,
-) error {
+	serverHub *server.Hub,
+	api publicapi.PublicAPI,
+	logger *log.Logger,
+) {
+	_, cancel := context.WithCancel(context.Background())
 	var httpServer *http.Server
-
-	//publicAPIHandler := orgchartpublic.NewStrictHandler(api, []orgchartpublic.StrictMiddlewareFunc{})
-	router := mux.NewRouter()
-	router.HandleFunc("/resilience/ready", func(w http.ResponseWriter, _ *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = stdio.WriteString(w, http.StatusText(http.StatusOK))
-	}).Methods(http.MethodGet)
-	//
-	//router.PathPrefix("/api/v1/orgchart").Handler(orgchartpublic.Handler(publicAPIHandler))
-	//
-	httpServer = &http.Server{
-		Handler:           router,
-		Addr:              config.Service.ServeRESTAddress,
-		ReadHeaderTimeout: 10 * time.Second,
-		ReadTimeout:       time.Hour,
-		WriteTimeout:      time.Hour,
-	}
-
-	return httpServer.ListenAndServe()
+	serverHub.Serve(func() error {
+		publicAPIHandler := orgchartpublic.NewStrictHandler(api, []orgchartpublic.StrictMiddlewareFunc{
+			common.NewLoggingMiddleware(logger),
+			publicapi.NewErrorsMiddleware(),
+		})
+		router := mux.NewRouter()
+		router.HandleFunc("/resilience/ready", func(w http.ResponseWriter, _ *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			_, _ = stdio.WriteString(w, http.StatusText(http.StatusOK))
+		}).Methods(http.MethodGet)
+		router.PathPrefix("/api/v1/orgchart").Handler(orgchartpublic.Handler(publicAPIHandler))
+		httpServer = &http.Server{
+			Handler:           router,
+			Addr:              config.Service.ServeRESTAddress,
+			ReadHeaderTimeout: 10 * time.Second,
+			ReadTimeout:       time.Hour,
+			WriteTimeout:      time.Hour,
+		}
+		return httpServer.ListenAndServe()
+	}, func() error {
+		cancel()
+		return httpServer.Shutdown(context.Background())
+	})
 }

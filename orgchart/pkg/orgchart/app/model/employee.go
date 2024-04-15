@@ -1,10 +1,11 @@
 package model
 
 import (
-	"context"
 	stderrors "errors"
-	"github.com/pkg/errors"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/pkg/errors"
 )
 
 type Gender uint8
@@ -25,7 +26,8 @@ var (
 )
 
 type Employee interface {
-	EmployeeID() uint64
+	EmployeeID() uuid.UUID
+	BranchID() uuid.UUID
 	FirstName() string
 	LastName() string
 	MiddleName() string
@@ -35,12 +37,13 @@ type Employee interface {
 	Gender() Gender
 	BirthDate() time.Time
 	HireDate() time.Time
-	Comment() string
-	AvatarPath() string
+	Comment() *string
+	AvatarPath() *string
 }
 
 func NewEmployee(
-	id uint64,
+	employeeID,
+	branchID uuid.UUID,
 	firstName,
 	lastName,
 	middleName,
@@ -51,7 +54,7 @@ func NewEmployee(
 	birthDate,
 	hireDate time.Time,
 	comment,
-	avatarPath string,
+	avatarPath *string,
 ) (Employee, error) {
 	if firstName == "" || lastName == "" || middleName == "" {
 		return nil, errors.WithStack(ErrInvalidName)
@@ -71,9 +74,9 @@ func NewEmployee(
 	if !isDateValid(hireDate) || hireDate.Before(birthDate) {
 		return nil, errors.WithStack(ErrInvalidHireDate)
 	}
-
 	return &employee{
-		employeeID: id,
+		employeeID: employeeID,
+		branchID:   branchID,
 		firstName:  firstName,
 		lastName:   lastName,
 		middleName: middleName,
@@ -88,8 +91,41 @@ func NewEmployee(
 	}, nil
 }
 
+func LoadEmployee(
+	employeeID,
+	branchID uuid.UUID,
+	firstName,
+	lastName,
+	middleName,
+	jobTitle,
+	phone,
+	email string,
+	gender Gender,
+	birthDate,
+	hireDate time.Time,
+	comment,
+	avatarPath *string,
+) Employee {
+	return &employee{
+		employeeID: employeeID,
+		branchID:   branchID,
+		firstName:  firstName,
+		lastName:   lastName,
+		middleName: middleName,
+		jobTitle:   jobTitle,
+		phone:      phone,
+		email:      email,
+		gender:     gender,
+		birthDate:  birthDate,
+		hireDate:   hireDate,
+		comment:    comment,
+		avatarPath: avatarPath,
+	}
+}
+
 type employee struct {
-	employeeID uint64
+	employeeID uuid.UUID
+	branchID   uuid.UUID
 	firstName  string
 	lastName   string
 	middleName string
@@ -99,64 +135,67 @@ type employee struct {
 	gender     Gender
 	birthDate  time.Time
 	hireDate   time.Time
-	comment    string
-	avatarPath string
+	comment    *string
+	avatarPath *string
 }
 
-func (e employee) EmployeeID() uint64 {
+func (e *employee) EmployeeID() uuid.UUID {
 	return e.employeeID
 }
 
-func (e employee) FirstName() string {
+func (e *employee) BranchID() uuid.UUID {
+	return e.branchID
+}
+
+func (e *employee) FirstName() string {
 	return e.firstName
 }
 
-func (e employee) LastName() string {
+func (e *employee) LastName() string {
 	return e.lastName
 }
 
-func (e employee) MiddleName() string {
+func (e *employee) MiddleName() string {
 	return e.middleName
 }
 
-func (e employee) JobTitle() string {
+func (e *employee) JobTitle() string {
 	return e.jobTitle
 }
 
-func (e employee) Email() string {
+func (e *employee) Email() string {
 	return e.email
 }
 
-func (e employee) Gender() Gender {
+func (e *employee) Gender() Gender {
 	return e.gender
 }
 
-func (e employee) BirthDate() time.Time {
+func (e *employee) BirthDate() time.Time {
 	return e.birthDate
 }
 
-func (e employee) HireDate() time.Time {
+func (e *employee) HireDate() time.Time {
 	return e.hireDate
 }
 
-func (e employee) Phone() string {
+func (e *employee) Phone() string {
 	return e.phone
 }
 
-func (e employee) Comment() string {
+func (e *employee) Comment() *string {
 	return e.comment
 }
 
-func (e employee) AvatarPath() string {
+func (e *employee) AvatarPath() *string {
 	return e.avatarPath
 }
 
-type EmployeeStorage interface {
-	Find(context context.Context, id uint64) (Employee, error)
-	Store(context context.Context, employee Employee) error
-	Update(context context.Context, employee Employee) error
-	Delete(context context.Context, id uint64) error
-	FindBranchEmployees(context.Context, uint64) ([]Employee, error)
+type EmployeeRepository interface {
+	Find(id uuid.UUID) (Employee, error)
+	Store(employee Employee) error
+	Delete(id uuid.UUID) error
+	ListBranchEmployees(branchID uuid.UUID) ([]Employee, error)
 }
 
 func isGenderValid(gender Gender) bool {

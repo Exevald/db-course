@@ -2,32 +2,37 @@ package main
 
 import (
 	"context"
-	"log"
-	"orgchart/pkg/orgchart/infrastructure"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
+
+	"orgchart/pkg/orgchart/common/mysql"
+	"orgchart/pkg/orgchart/infrastructure"
 )
 
 const appName = "orgchart"
 
 func main() {
 	ctx := context.Background()
+	logger := log.New()
+
 	conf, err := parseEnv()
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
-
-	err = runApp(ctx, conf)
-
+	err = runApp(ctx, conf, logger)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 }
 
-func runApp(ctx context.Context, config *config) error {
+func runApp(ctx context.Context, config *config, logger *log.Logger) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
@@ -36,15 +41,52 @@ func runApp(ctx context.Context, config *config) error {
 	app := cli.App{
 		Name: appName,
 		Commands: []*cli.Command{
-			service(config),
+			service(config, logger),
 		},
 	}
 	err := app.RunContext(ctx, os.Args)
 	return err
 }
 
-func newDependencyContainer() (*infrastructure.DependencyContainer, error) {
-	return infrastructure.NewDependencyContainer()
+type connectionsContainer struct {
+	connector mysql.Connector
+}
+
+func newConnectionsContainer(config *config) (*connectionsContainer, error) {
+	container := &connectionsContainer{}
+	containerBuilder := func() error {
+		connector, err := newDatabaseConnector(config)
+		if err != nil {
+			return err
+		}
+		container.connector = connector
+		return nil
+	}
+	return container, containerBuilder()
+}
+
+func newDatabaseConnector(config *config) (mysql.Connector, error) {
+	connector := mysql.NewConnector()
+	err := connector.Open(config.dsn(), mysql.Config{
+		MaxConnections:     config.DB.MaxConn,
+		ConnectionLifetime: time.Duration(config.DB.ConnectionLifetime) * time.Second,
+	})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed database connection")
+	}
+	err = connector.Ping()
+	if err != nil {
+		return nil, errors.Wrap(err, "failed database ping")
+	}
+	return connector, nil
+}
+
+func newDependencyContainer(config *config) (*infrastructure.DependencyContainer, error) {
+	connectionsContainer, err := newConnectionsContainer(config)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to initialize connections container")
+	}
+	return infrastructure.NewDependencyContainer(connectionsContainer.connector)
 }
 
 func listenOSKillSignals(ctx context.Context) context.Context {

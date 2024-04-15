@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/kelseyhightower/envconfig"
 	"github.com/pkg/errors"
+
+	"orgchart/pkg/orgchart/common/mysql"
 )
 
 func parseEnv() (*config, error) {
@@ -23,10 +25,19 @@ type dbConfig struct {
 }
 
 type serviceConfig struct {
-	ServeRESTAddress string `envconfig:"serve_rest_address" default:"8082"`
+	ServeRESTAddress string `envconfig:"serve_rest_address" default:":8082"`
 }
 
 type config struct {
 	DB      dbConfig      `envconfig:"db"`
 	Service serviceConfig `envconfig:"service"`
+}
+
+func (c *config) dsn() mysql.DSN {
+	return mysql.DSN{
+		Host:     c.DB.Host,
+		Database: c.DB.Name,
+		User:     c.DB.User,
+		Password: c.DB.Password,
+	}
 }

@@ -1,71 +1,77 @@
 package model
 
 import (
-	"context"
 	stderrors "errors"
 
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
 
 var (
-	ErrBranchNotFound = stderrors.New("branch not found")
-	ErrInvalidCity    = stderrors.New("invalid city")
-	ErrInvalidAddress = stderrors.New("invalid address")
+	ErrBranchNotFound     = stderrors.New("branch not found")
+	ErrInvalidCity        = stderrors.New("invalid city")
+	ErrInvalidAddress     = stderrors.New("invalid address")
+	ErrBranchHasEmployees = stderrors.New("branch has employees")
 )
 
 type Branch interface {
-	ID() uint64
+	ID() uuid.UUID
 	City() string
 	Address() string
-	Employees() []employee
 }
 
 func NewBranch(
-	id uint64,
+	id uuid.UUID,
 	city,
 	address string,
 ) (Branch, error) {
 	if city == "" {
-		return branch{}, errors.WithStack(ErrInvalidCity)
+		return &branch{}, errors.WithStack(ErrInvalidCity)
 	}
 	if address == "" {
-		return branch{}, errors.WithStack(ErrInvalidAddress)
+		return &branch{}, errors.WithStack(ErrInvalidAddress)
 	}
 
 	return &branch{
-		branchID:  id,
-		city:      city,
-		address:   address,
-		employees: nil,
+		branchID: id,
+		city:     city,
+		address:  address,
 	}, nil
 }
 
-type branch struct {
-	branchID  uint64
-	city      string
-	address   string
-	employees []employee
+func LoadBranch(
+	id uuid.UUID,
+	city,
+	address string,
+) Branch {
+	return &branch{
+		branchID: id,
+		city:     city,
+		address:  address,
+	}
 }
 
-func (b branch) ID() uint64 {
+type branch struct {
+	branchID uuid.UUID
+	city     string
+	address  string
+}
+
+func (b *branch) ID() uuid.UUID {
 	return b.branchID
 }
 
-func (b branch) City() string {
+func (b *branch) City() string {
 	return b.city
 }
 
-func (b branch) Address() string {
+func (b *branch) Address() string {
 	return b.address
 }
 
-func (b branch) Employees() []employee {
-	return b.employees
-}
-
-type BranchStorage interface {
-	Find(context context.Context, id uint64) (Branch, error)
-	Store(context context.Context, branch Branch) error
-	Update(context context.Context, branch Branch) error
-	Delete(context context.Context, id uint64) error
+type BranchRepository interface {
+	Find(id uuid.UUID) (Branch, error)
+	Store(branch Branch) error
+	Delete(id uuid.UUID) error
+	ListBranches() ([]Branch, error)
 }

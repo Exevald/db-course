@@ -22,8 +22,7 @@ paths:
         - in: path
           name: branchId
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           content:
@@ -43,8 +42,7 @@ paths:
         - in: path
           name: employeeId
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           content:
@@ -101,8 +99,7 @@ paths:
           name: branchId
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       requestBody:
         required: true
         content:
@@ -125,8 +122,7 @@ paths:
           name: employeeId
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       requestBody:
         required: true
         content:
@@ -149,8 +145,7 @@ paths:
           name: branchId
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: Successfully deleted
@@ -167,8 +162,7 @@ paths:
           name: employeeId
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: Successfully deleted
@@ -243,6 +237,10 @@ components:
           type: string
         employees:
           $ref: '#/components/schemas/Employees'
+      required:
+        - city
+        - address
+        - employees
     CreateBranchRequestData:
       type: object
       properties:
@@ -256,6 +254,8 @@ components:
     CreateEmployeeRequestData:
       type: object
       properties:
+        branchId:
+          type: string
         firstName:
           type: string
         lastName:
@@ -272,15 +272,16 @@ components:
           type: integer
         birthDate:
           type: string
-          format: date
+          format: datetime
         hireDate:
           type: string
-          format: date
+          format: datetime
         comment:
           type: string
         photoPath:
           type: string
       required:
+        - branchId
         - firstName
         - lastName
         - middleName
@@ -295,16 +296,14 @@ components:
       type: object
       properties:
         branchId:
-          type: integer
-          format: int64
+          type: string
       required:
         - branchId
     CreateEmployeeResponseData:
       type: object
       properties:
         employeeId:
-          type: integer
-          format: int64
+          type: string
       required:
         - employeeId
     Branch:
@@ -320,6 +319,8 @@ components:
     Employee:
       type: object
       properties:
+        branchId:
+          type: string
         firstName:
           type: string
         lastName:
@@ -336,15 +337,16 @@ components:
           type: integer
         birthDate:
           type: string
-          format: date
+          format: datetime
         hireDate:
           type: string
-          format: date
+          format: datetime
         comment:
           type: string
-        photoPath:
+        avatarPath:
           type: string
       required:
+        - branchId
         - firstName
         - lastName
         - middleName
@@ -354,7 +356,6 @@ components:
         - gender
         - birthDate
         - hireDate
-        - comment
     BranchPreview:
       type: object
       properties:

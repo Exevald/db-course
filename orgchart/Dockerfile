@@ -1,5 +1,9 @@
 FROM debian:11-slim
-COPY bin/orgchart /app/bin/
+
+ADD ./bin/orgchart app/bin/
+WORKDIR /app
+
+EXPOSE 8080
 
 ENTRYPOINT [ "/app/bin/orgchart" ]
 CMD ["service"]
