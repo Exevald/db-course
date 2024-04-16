@@ -10,7 +10,6 @@
 
 Для запуска сервиса нужно выполнить команды:
 ```bash
-bash bin/run-codegen
 brewkit build
 docker-compose up --build -d
 docker-compose down
