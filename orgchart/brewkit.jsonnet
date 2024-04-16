@@ -4,4 +4,8 @@ local appIDs = [
     'orgchart',
 ];
 
-project.project(appIDs)
+local openAPI = [
+    'api/server/orgchartpublic/orgchartpublic.yaml'
+];
+
+project.project(appIDs, openAPI)

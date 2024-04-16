@@ -22,7 +22,7 @@ local gosources = [
 
 {
     // Function that generate project build definitions, including code generating, app compilation and e.t.c
-    project(appIDs):: {
+    project(appIDs, openAPI):: {
         apiVersion: "brewkit/v1",
 
         targets: {
@@ -48,7 +48,7 @@ local gosources = [
                 from: "gobase",
                 workdir: "/app",
                 cache: gocache,
-                dependsOn: ["modules"],
+                dependsOn: ["generate", "modules"],
                 command: "go build -trimpath -v -o ./bin/" + appID + " ./cmd/" + appID,
                 output: {
                     artifact: "/app/bin/" +  appID,
@@ -62,6 +62,10 @@ local gosources = [
                 workdir: "/app",
                 copy: [copy(source, source) for source in gosources]
             },
+
+            generate: ['generateopenapi'],
+
+            generateopenapi: schemas.generateOPENApi(openAPI),
 
             modules: ["gotidy", "modulesvendor"],
 
