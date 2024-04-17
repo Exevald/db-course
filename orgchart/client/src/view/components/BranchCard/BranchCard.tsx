@@ -9,10 +9,10 @@ interface BranchCardProps {
 const BranchCard = (props: BranchCardProps) => {
     return (
         <div className={styles.branchCard}>
-            <div>
-                <h2>Подразделение</h2>
+            <div className={styles.branchInfoWrapper}>
+                <h2 className={styles.branchInfoTitle}>Подразделение</h2>
                 <p>Город: {props.city}</p>
-                <p>Адресс: {props.address}</p>
+                <p>Адрес: {props.address}</p>
             </div>
         </div>
     )

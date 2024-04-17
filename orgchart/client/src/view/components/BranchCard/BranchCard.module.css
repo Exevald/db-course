@@ -6,3 +6,14 @@
     background-color: var(--shinji);
     box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
 }
+
+.branchInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 5px;
+}
+
+.branchInfoTitle {
+    text-align: center;
+}
