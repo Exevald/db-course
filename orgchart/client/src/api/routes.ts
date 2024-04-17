@@ -1,3 +1,5 @@
+const serviceUrl = "http://localhost:8882"
+
 /**
  *  Pages routes
  */
@@ -8,7 +10,7 @@ const employeeInfoUrl = "/employee/EMPLOYEE_ID"
 /**
  * Page data API routes
  */
-const getBranchListAPIUrl = "/api/v1/orgchart/branch/list"
+const getBranchListAPIUrl = serviceUrl + "/api/v1/orgchart/branch/list"
 const getBranchInfoAPIUrl = "/api/v1/orgchart/branch/BRANCH_ID"
 const getEmployeeInfoAPIUrl = "/api/v1/orgchart/employee/EMPLOYEE_ID"
 

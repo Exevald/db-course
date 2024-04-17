@@ -4,14 +4,14 @@ enum Gender {
 }
 
 type Branch = {
-    id: string,
+    id?: string,
     city: string,
     address: string,
     employeesList: Array<Employee>
 }
 
 type Employee = {
-    id: string,
+    id?: string,
     branchId: string,
     firstName: string,
     lastName: string,

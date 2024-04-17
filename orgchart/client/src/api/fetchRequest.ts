@@ -24,10 +24,10 @@ const fetchGetRequest = async (
         method: 'GET',
     }).then(response => {
         if (!response.ok) {
-            throw new Error()
+            throw new Error(`Failed with status ${response.status}: ${response.statusText}`);
         }
         return response.json()
     })
 }
 
-export { fetchPostRequest, fetchGetRequest }
+export {fetchPostRequest, fetchGetRequest}

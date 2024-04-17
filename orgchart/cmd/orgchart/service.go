@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	stdio "io"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"github.com/rs/cors"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 
@@ -64,11 +64,13 @@ func serveHTTP(
 		router := mux.NewRouter()
 		router.HandleFunc("/resilience/ready", func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
-			_, _ = stdio.WriteString(w, http.StatusText(http.StatusOK))
 		}).Methods(http.MethodGet)
 		router.PathPrefix("/api/v1/orgchart").Handler(orgchartpublic.Handler(publicAPIHandler))
+		corsWrapper := cors.New(cors.Options{
+			AllowedOrigins: []string{"http://localhost:3000"},
+		})
 		httpServer = &http.Server{
-			Handler:           router,
+			Handler:           corsWrapper.Handler(router),
 			Addr:              config.Service.ServeRESTAddress,
 			ReadHeaderTimeout: 10 * time.Second,
 			ReadTimeout:       time.Hour,

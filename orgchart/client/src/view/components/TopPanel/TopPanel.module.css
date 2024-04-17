@@ -1,0 +1,14 @@
+.topPanel {
+    width: 100%;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--ayanami-20);
+    background-color: var(--shinji);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+.logoArea {
+    margin-left: 70px;
+}
