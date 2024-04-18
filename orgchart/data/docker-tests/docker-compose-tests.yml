@@ -1,0 +1,49 @@
+version: '3.3'
+
+services:
+  orgchart-dev-for-tests:
+    image: orgchart
+    container_name: orgchart-dev-for-tests
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ORGCHART_DB_HOST: orgchart-tests-db-dev:3306
+      ORGCHART_DB_NAME: orgchart-test
+      ORGCHART_DB_USER: orgchart-test
+      ORGCHART_DB_PASSWORD: LxilKD9Pbe
+      # Coupled with MySQL 'max_connections' option: must be 'max_connections - 5'
+      ORGCHART_DB_MAX_CONN: 5
+    depends_on:
+      - orgchart-tests-db-dev
+  orgchart-tests-dev:
+    image: orgchart-tests-dev
+    container_name: orgchart-tests-dev
+    build:
+      context: .
+      dockerfile: data/docker-tests/Dockerfile
+    environment:
+      ORGCHART_TEST_SERVICE_HTTP_ENDPOINT: "http://orgchart-dev-for-tests:8082"
+      ORGCHART_TEST_SERVE_REST_ADDRESS: ":8082"
+    depends_on:
+      - orgchart-dev-for-tests
+  orgchart-tests-db-dev:
+    image: mysql:8.0.32
+    container_name: orgchart-tests-db-dev
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: orgchart-test
+      MYSQL_USER: orgchart-test
+      MYSQL_PASSWORD: LxilKD9Pbe
+    volumes:
+      - "orgchart-db-dev-test-data:/var/lib/mysql"
+      - "${PWD}/data/mysql/config/:/etc/my.cnf.d"
+    healthcheck:
+      test: mysql -h127.0.0.1 -uroot -e 'SELECT 1'
+      interval: 2s # ping database each 2 seconds
+      timeout: 1s
+volumes:
+  orgchart-db-dev-test-data:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs

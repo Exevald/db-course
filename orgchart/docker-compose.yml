@@ -34,8 +34,8 @@ services:
     image: client-dev
     container_name: client-dev
     build:
-        context: ./client
-        dockerfile: Dockerfile
+        context: .
+        dockerfile: ./client/Dockerfile
     ports:
       - '3000:3000'
 

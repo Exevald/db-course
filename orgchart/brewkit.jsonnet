@@ -2,6 +2,7 @@ local project = import 'brewkit/project.libsonnet';
 
 local appIDs = [
     'orgchart',
+    'integrationaltests'
 ];
 
 local openAPI = [

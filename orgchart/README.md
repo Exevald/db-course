@@ -15,8 +15,8 @@ docker-compose up --build -d
 docker-compose down
 ```
 
-Для запуска end2end тестов:
+Для запуска интеграционных тестов:
 ```bash
 brewkit build
-bin/run-end2end-tests
+bin/run-integrational-tests
 ```
