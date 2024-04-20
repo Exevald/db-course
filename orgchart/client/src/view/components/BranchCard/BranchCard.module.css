@@ -10,10 +10,32 @@
 .branchInfoWrapper {
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    gap: 5px;
+    padding: 15px;
+    gap: 25px;
 }
 
-.branchInfoTitle {
-    text-align: center;
+.branchInfoTitleArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.iconContainer{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.1s ease-in;
+    border-radius: 10px;
+    position: relative;
+}
+
+.iconContainer:hover{
+    background-color: var(--kaoru-20);
+}
+
+.popover{
+    position: absolute;
+    top: 50px;
+    width: 200px;
 }

@@ -1,12 +1,16 @@
 export function convertAPIData(data: any) {
-    switch (data.type)
+    switch (typeof data)
     {
-        case "Object": {
+        case "object": {
+            if (data instanceof Array) {
+                console.log("Array")
+                break
+            }
             console.log("Object")
             break
         }
         default: {
-            console.log(data.type)
+            console.log(data)
         }
     }
 }

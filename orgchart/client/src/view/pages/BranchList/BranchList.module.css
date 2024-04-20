@@ -1,8 +1,15 @@
 .branchList {
+    display: flex;
+    flex-direction: column;
+}
+
+.branchListMainContentArea{
+    display: flex;
+
 }
 
 .branchCardsWrapper {
-    margin-top: 50px;
+    padding: 50px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

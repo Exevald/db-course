@@ -1,0 +1,50 @@
+.sidebarElementWrapper{
+    display: flex;
+    gap: 5px;
+    align-items: stretch;
+}
+
+.sidebarElementWrapper__activePanel{
+    opacity: 0;
+    width: 7px;
+    border-radius: 0 5px 5px 0;
+    background-color: var(--gendo-default)
+}
+
+.sidebarElementWrapper__activePanel_active{
+    opacity: 1;
+}
+
+.linkWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebarElementWrapper__iconArea{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    transition: all 0.1s ease-in;
+}
+
+.sidebarElementWrapper__iconArea:hover{
+    background-color: var(--ayanami-default);
+}
+
+.sidebarWrapper{
+    padding: 10px 10px 0 0;
+    background-color: var(--kaoru-default);
+    height: 100vh;
+    border: 1px solid var(--shinji);
+    border-left: none;
+}
+
+.sidebarWrapper__contentArea{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 20px;
+}
