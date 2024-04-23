@@ -24,7 +24,7 @@ func NewLoggingMiddleware(logger *log.Logger) strictnethttp.StrictHTTPMiddleware
 			}
 			loggerWithFields := logger.WithFields(fields)
 			if err != nil {
-				loggerWithFields.Error(err, "call failed")
+				loggerWithFields.WithField("error", err).Error("call failed")
 			} else {
 				loggerWithFields.Info("call succeeded")
 			}

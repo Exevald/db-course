@@ -2,6 +2,7 @@ package publicapi
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 
 	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
@@ -17,50 +18,68 @@ func NewErrorsMiddleware() orgchartpublic.StrictMiddlewareFunc {
 			resp, err := f(ctx, w, r, request)
 			switch errors.Cause(err) {
 			case model.ErrBranchNotFound:
-				return orgchartpublic.NotFoundJSONResponse{
+				w.WriteHeader(404)
+				err2 := json.NewEncoder(w).Encode(orgchartpublic.NotFoundJSONResponse{
 					Code:    orgchartpublic.BranchNotFound,
 					Message: err.Error(),
-				}, nil
+				})
+				return nil, err2
 			case model.ErrEmployeeNotFound:
-				return orgchartpublic.NotFoundJSONResponse{
+				w.WriteHeader(404)
+				err2 := json.NewEncoder(w).Encode(orgchartpublic.NotFoundJSONResponse{
 					Code:    orgchartpublic.EmployeeNotFound,
 					Message: err.Error(),
-				}, nil
+				})
+				return nil, err2
 			case model.ErrInvalidCity:
-				return orgchartpublic.BadRequestJSONResponse{
+				w.WriteHeader(400)
+				err2 := json.NewEncoder(w).Encode(orgchartpublic.BadRequestJSONResponse{
 					Code:    orgchartpublic.InvalidCity,
 					Message: err.Error(),
-				}, nil
+				})
+				return nil, err2
 			case model.ErrInvalidAddress:
-				return orgchartpublic.BadRequestJSONResponse{
+				w.WriteHeader(400)
+				err2 := json.NewEncoder(w).Encode(orgchartpublic.BadRequestJSONResponse{
 					Code:    orgchartpublic.InvalidAddress,
 					Message: err.Error(),
-				}, nil
+				})
+				return nil, err2
 			case model.ErrInvalidName:
-				return orgchartpublic.BadRequestJSONResponse{
+				w.WriteHeader(400)
+				err2 := json.NewEncoder(w).Encode(orgchartpublic.BadRequestJSONResponse{
 					Code:    orgchartpublic.InvalidName,
 					Message: err.Error(),
-				}, nil
+				})
+				return nil, err2
 			case model.ErrInvalidJobTitle:
-				return orgchartpublic.BadRequestJSONResponse{
+				w.WriteHeader(400)
+				err2 := json.NewEncoder(w).Encode(orgchartpublic.BadRequestJSONResponse{
 					Code:    orgchartpublic.InvalidJobTitle,
 					Message: err.Error(),
-				}, nil
+				})
+				return nil, err2
 			case model.ErrInvalidEmail:
-				return orgchartpublic.BadRequestJSONResponse{
+				w.WriteHeader(400)
+				err2 := json.NewEncoder(w).Encode(orgchartpublic.BadRequestJSONResponse{
 					Code:    orgchartpublic.InvalidEmail,
 					Message: err.Error(),
-				}, nil
+				})
+				return nil, err2
 			case model.ErrInvalidAge, model.ErrInvalidHireDate:
-				return orgchartpublic.BadRequestJSONResponse{
+				w.WriteHeader(400)
+				err2 := json.NewEncoder(w).Encode(orgchartpublic.BadRequestJSONResponse{
 					Code:    orgchartpublic.InvalidDate,
 					Message: err.Error(),
-				}, nil
+				})
+				return nil, err2
 			case model.ErrInvalidGender:
-				return orgchartpublic.BadRequestJSONResponse{
+				w.WriteHeader(400)
+				err2 := json.NewEncoder(w).Encode(orgchartpublic.BadRequestJSONResponse{
 					Code:    orgchartpublic.InvalidGender,
 					Message: err.Error(),
-				}, nil
+				})
+				return nil, err2
 			case nil:
 				return resp, nil
 			}
