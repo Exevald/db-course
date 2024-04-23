@@ -30,14 +30,14 @@ services:
     volumes:
       - "orgchart-db-dev-data:/var/lib/mysql"
       - "${PWD}/data/mysql/config/:/etc/my.cnf.d"
-  client-dev:
-    image: client-dev
-    container_name: client-dev
-    build:
-        context: .
-        dockerfile: ./client/Dockerfile
-    ports:
-      - '3000:3000'
+#  client-dev:
+#    image: client-dev
+#    container_name: client-dev
+#    build:
+#        context: .
+#        dockerfile: ./client/Dockerfile
+#    ports:
+#      - '3000:3000'
 
 
 volumes:

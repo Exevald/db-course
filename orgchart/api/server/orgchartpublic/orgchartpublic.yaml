@@ -231,6 +231,8 @@ components:
     GetBranchInfoResponseData:
       type: object
       properties:
+        branchId:
+          type: string
         city:
           type: string
         address:
@@ -238,6 +240,7 @@ components:
         employees:
           $ref: '#/components/schemas/Employees'
       required:
+        - branchId
         - city
         - address
         - employees
@@ -319,6 +322,8 @@ components:
     Employee:
       type: object
       properties:
+        employeeId:
+          type: string
         branchId:
           type: string
         firstName:
@@ -346,6 +351,7 @@ components:
         avatarPath:
           type: string
       required:
+        - employeeId
         - branchId
         - firstName
         - lastName
@@ -359,6 +365,8 @@ components:
     BranchPreview:
       type: object
       properties:
+        branchId:
+          type: string
         city:
           type: string
         address:
@@ -367,12 +375,15 @@ components:
           type: integer
           format: int64
       required:
+        - branchId
         - city
         - address
         - countOfEmployees
     EmployeePreview:
       type: object
       properties:
+        employeeId:
+          type: string
         firstName:
           type: string
         lastName:
@@ -382,6 +393,7 @@ components:
         jobTitle:
           type: string
       required:
+        - employeeId
         - firstName
         - lastName
         - middleName

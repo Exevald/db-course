@@ -1,0 +1,41 @@
+.toast__wrapper {
+    display: none;
+    position: fixed;
+    z-index: 6;
+    top: 85%;
+    left: calc((100% - 424px) / 2);
+    transform: scale(1, 0);
+    transform-origin: left;
+    transition: 220ms;
+    font: var(--text-text-normal-regular);
+}
+
+.toast__show {
+    display: block;
+}
+
+.toast__open {
+    transform: scale(1);
+}
+
+.toast__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--kaoru-default);
+    border-radius: 20px;
+    background-color: white;
+    width: 347px;
+    padding: 28px 32px 28px 45px;
+}
+
+.toast__text {
+    max-width: 300px;
+    text-align: left;
+}
+
+.toast__cross {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}

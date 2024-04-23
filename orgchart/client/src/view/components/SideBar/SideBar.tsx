@@ -1,5 +1,4 @@
 import styles from "./SideBar.module.css"
-import {Link} from "react-router-dom";
 import {ButtonTypes} from "../Button/Button";
 
 
@@ -42,7 +41,7 @@ const SideBarElement = (props: SideBarElementProps) => {
                     </div>
                     <div className={styles.sidebarElementWrapper__iconArea}>
                         {props.linked && props.url &&
-                            <Link className={styles.linkWrapper} to={props.url}>{props.icon}</Link>
+                            <a className={styles.linkWrapper} href={props.url}>{props.icon}</a>
                         }
                         {!props.linked && props.icon}
                     </div>

@@ -1,0 +1,21 @@
+.inputDefault {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--kaoru-60);
+    border: 1px solid var(--kaoru-60);
+    border-radius: 5px;
+    min-width: 150px;
+    height: 35px;
+    padding-left: 10px;
+}
+
+.inputDefault:hover {
+    cursor: pointer;
+}
+
+.inputDefault:focus {
+    border: 2px solid var(--ayanami-default);
+    color: var(--gendo-default);
+    outline: none;
+}

@@ -1,20 +1,20 @@
-import styles from "./PopoverContainer.module.css"
+import styles from "./Popover.module.css"
 
 import {ButtonTypes} from "../Button/Button";
 
 
 export type PopoverProps = {
-    Elems: PopoverElemProps[]
+    Elems: PopoverElemProps[],
 }
 
-type PopoverElemProps = {
+export type PopoverElemProps = {
     ElemType: ButtonTypes,
     Text?: string,
-    onClick: (url: string) => void
+    onClick: () => void,
 }
 
 
-export const PopoverContainer = (props: PopoverProps) => {
+export const Popover = (props: PopoverProps) => {
     const elems = props.Elems.map((elem, i) =>
         <PopoverElem {...elem} key = {i}/>
     )
@@ -28,7 +28,7 @@ export const PopoverContainer = (props: PopoverProps) => {
 
 export const PopoverElem = (props: PopoverElemProps) => {
     return(
-        <div className={styles.popoverItemArea}>
+        <div className={styles.popoverItemArea} onClick={props.onClick}>
             {props.Text}
         </div>
 

@@ -1,0 +1,35 @@
+.button {
+    max-width: 110px;
+    height: 40px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0 11px 0 11px;
+    background-color: var(--ayanami-default);
+    color: white;
+}
+
+.button:hover {
+    background-color: var(--ayanami-dark);
+}
+
+.button:active {
+    background-color: var(--ayanami-default);
+    border: 3px solid var(--ayanami-20);
+    outline: none;
+}
+
+.button:disabled {
+    background-color: var(--ayanami-20);
+}
+
+.buttonCreateUser {
+    margin-left: 110px;
+}

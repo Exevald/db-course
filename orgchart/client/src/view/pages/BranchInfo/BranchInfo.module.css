@@ -1,0 +1,59 @@
+.branchInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.branchInfoMainContentArea {
+    display: flex;
+}
+
+.branchInfoBlock {
+    display: flex;
+    flex-direction: column;
+    margin-left: 18%;
+    margin-top: 50px;
+}
+
+.branchInfoBlock__form {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 780px;
+    border-bottom: 1px solid var(--ayanami-20);
+    background-color: var(--shinji);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 32px 40px;
+}
+
+.branchInfoBlock__title {
+    font-size: 20px;
+    color: var(--gendo-default);
+}
+
+.employeeCardsWrapper {
+    padding: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+}
+
+.branchInfoBlock__paramRows {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.branchInfoBlock__row {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.branchInfoBlock__employeesBlock {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}

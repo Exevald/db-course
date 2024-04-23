@@ -50,6 +50,7 @@ func (p publicAPI) ListBranches(_ context.Context, _ orgchartpublic.ListBranches
 			return nil, err2
 		}
 		branches = append(branches, orgchartpublic.BranchPreview{
+			BranchId:         branch.ID().String(),
 			Address:          branch.Address(),
 			City:             branch.City(),
 			CountOfEmployees: int64(len(branchEmployees)),
@@ -77,6 +78,7 @@ func (p publicAPI) GetBranchInfo(_ context.Context, request orgchartpublic.GetBr
 		employees = append(employees, mapEmployeeModelToAPI(employee))
 	}
 	return orgchartpublic.GetBranchInfo200JSONResponse{
+		BranchId:  branchID.String(),
 		City:      branch.City(),
 		Address:   branch.Address(),
 		Employees: employees,
@@ -161,6 +163,7 @@ func (p publicAPI) GetEmployeeInfo(_ context.Context, request orgchartpublic.Get
 	}
 	employee, err := p.employeeService.GetEmployeeInfo(employeeID)
 	return orgchartpublic.GetEmployeeInfo200JSONResponse{
+		EmployeeId: employeeID.String(),
 		FirstName:  employee.FirstName(),
 		LastName:   employee.LastName(),
 		MiddleName: employee.MiddleName(),

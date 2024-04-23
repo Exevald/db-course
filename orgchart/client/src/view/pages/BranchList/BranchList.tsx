@@ -3,16 +3,12 @@ import styles from "./BranchList.module.css"
 import {ViewBranch} from "../../../model/types";
 import {TopPanel} from "../../components/TopPanel/TopPanel";
 import {BranchCard} from "../../components/BranchCard/BranchCard";
-import { SideBarWrapper, SideBarWrapperProps} from "../../components/SideBar/SideBar";
-import {AddIcon, DeleteIcon} from "../../components/Icons/Icons";
+import {SideBarWrapper, SideBarWrapperProps} from "../../components/SideBar/SideBar";
+import {AddIcon} from "../../components/Icons/Icons";
 import {ButtonTypes} from "../../components/Button/Button";
-import {createBranchUrl, deleteBranchUrl, getBranchListAPIUrl} from "../../../api/routes";
+import {createBranchUrl, getBranchListAPIUrl} from "../../../api/routes";
 import {fetchGetRequest} from "../../../api/fetchRequest";
-import {convertAPIData} from "../../../api/convertAPIData";
-
-interface BranchListProps {
-    branches: Array<ViewBranch>
-}
+import ReactDOM from "react-dom/client";
 
 const sideBar: SideBarWrapperProps = {
     Elements: [{
@@ -21,17 +17,11 @@ const sideBar: SideBarWrapperProps = {
         active: true,
         linked: true,
         url: createBranchUrl
-    }, {
-        ElementType: ButtonTypes.Icon,
-        icon: <DeleteIcon/>,
-        active: false,
-        linked: true,
-        url: deleteBranchUrl
     }]
 }
 
-const BranchList = (props: BranchListProps) => {
-    const [data, setData] = useState<{branches: ViewBranch[]}>({branches: []})
+const BranchList = () => {
+    const [data, setData] = useState<{ branches: ViewBranch[] }>({branches: []})
     const [branches, setBranches] = useState<ReactElement[]>([])
     const [loading, setLoading] = useState(true)
     useEffect(() => {
@@ -44,6 +34,7 @@ const BranchList = (props: BranchListProps) => {
     useEffect(() => {
         setBranches(data.branches.map((branch, index) => (
             <BranchCard
+                branchId={branch.branchId}
                 key={index}
                 city={branch.city}
                 address={branch.address}
@@ -58,11 +49,23 @@ const BranchList = (props: BranchListProps) => {
             <div className={styles.branchListMainContentArea}>
                 <SideBarWrapper {...sideBar}/>
                 <div className={styles.branchCardsWrapper}>
-                    {loading ? <h1>LOADING...</h1> : branches }
+                    {loading ? <h1>LOADING...</h1> : branches}
                 </div>
             </div>
 
         </div>
     )
 }
-export {BranchList}
+
+function renderBranchListPage() {
+    const root = ReactDOM.createRoot(
+        document.getElementById('root') as HTMLElement
+    );
+    root.render(
+        <React.StrictMode>
+            <BranchList/>
+        </React.StrictMode>
+    )
+}
+
+export {renderBranchListPage}

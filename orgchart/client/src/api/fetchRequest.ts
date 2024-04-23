@@ -30,4 +30,43 @@ const fetchGetRequest = async (
     })
 }
 
-export {fetchPostRequest, fetchGetRequest}
+const fetchUpdateRequest = async (
+    requestUrl: string,
+    dataObject?: object,
+    ignoredStatuses?: number[]
+) => {
+    return fetch(requestUrl, {
+        method: 'PATCH',
+        body: JSON.stringify(dataObject)
+    }).then(response => {
+        if (!response.ok) {
+            if (ignoredStatuses && ignoredStatuses.includes(response.status)) {
+                return response
+            }
+            throw new Error()
+        }
+        return response
+    })
+}
+
+
+const fetchDeleteRequest = async (
+    requestUrl: string,
+    ignoredStatuses?: number[]
+) => {
+    console.log(requestUrl)
+    return fetch(requestUrl, {
+        method: 'DELETE',
+    }).then(response => {
+        if (!response.ok) {
+            if (ignoredStatuses && ignoredStatuses.includes(response.status)) {
+                return response
+            }
+            throw new Error()
+        }
+        return response
+    })
+}
+
+
+export {fetchPostRequest, fetchGetRequest, fetchDeleteRequest, fetchUpdateRequest}

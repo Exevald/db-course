@@ -3,15 +3,22 @@ enum Gender {
     Female
 }
 
+type Branch = {
+    branchId: string
+    city: string,
+    address: string,
+    employees: ViewEmployee[]
+}
 
 type ViewBranch = {
+    branchId: string
     city: string,
     address: string,
     countOfEmployees: number
 }
 
-type Employee = {
-    id?: string,
+type ViewEmployee = {
+    employeeId: string,
     branchId: string,
     firstName: string,
     lastName: string,
@@ -26,4 +33,4 @@ type Employee = {
     avatarPath?: string
 }
 
-export type {Employee, Gender,ViewBranch}
+export type {ViewEmployee, ViewBranch, Branch, Gender}

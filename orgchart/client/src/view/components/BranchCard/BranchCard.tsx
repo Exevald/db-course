@@ -1,55 +1,47 @@
 import styles from "./BranchCard.module.css"
 import {EllipsisIcon} from "../Icons/Icons";
-import {PopoverContainer, PopoverProps} from "../PopoverContainer/PopoverContainer";
+import {Popover, PopoverElemProps} from "../Popover/Popover";
 import {ButtonTypes} from "../Button/Button";
 import {useState} from "react";
-import {branchInfoUrl} from "../../../api/routes";
+import {branchInfoUrl, deleteBranchAPIUrl} from "../../../api/routes";
+import {deleteBranchAction} from "../../../api/actionCreators";
 
 interface BranchCardProps {
+    branchId: string,
     city: string,
     address: string,
     countOfEmployees: number
 }
 
-const popoverProps: PopoverProps = {
-    Elems: [
+const BranchCard = (props: BranchCardProps) => {
+    const [openPopover, setOpened] = useState(false)
+    const popoverElems: PopoverElemProps[] = [
         {
             Text: "Просмотреть",
             ElemType: ButtonTypes.Text,
-            onClick: (url: string) => {
-                window.location.href = url
-            }
-        },
-        {
-            Text: "Изменить",
-            ElemType: ButtonTypes.Text,
-            onClick: (url: string) => {
-                window.location.href = url
+            onClick: () => {
+                window.location.href = branchInfoUrl.replace("BRANCH_ID", props.branchId)
             }
         },
         {
             Text: "Удалить",
             ElemType: ButtonTypes.Text,
-            onClick: (url: string) => {
-                window.location.href = url
+            onClick: () => {
+                deleteBranchAction(props.branchId)
             }
         },
     ]
-}
-
-const BranchCard = (props: BranchCardProps) => {
-    const [openPopover, setOpened] = useState(false)
     return (
         <div className={styles.branchCard}>
             <div className={styles.branchInfoWrapper}>
                 <div className={styles.branchInfoTitleArea}>
-                    <h2>Подразделение</h2>
+                    <h2>Филиал</h2>
                     <div onClick={() => {
                         setOpened(!openPopover)
                     }} className={styles.iconContainer}>
                         <EllipsisIcon/>
                         {openPopover && <div className={styles.popover}>
-                            <PopoverContainer {...popoverProps}/>
+                            <Popover Elems={popoverElems}/>
                         </div>}
                     </div>
                 </div>

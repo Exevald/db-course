@@ -1,0 +1,19 @@
+.breadcrumbs {
+    display: flex;
+    gap: 5px;
+}
+
+.breadcrumbs__item {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+.breadcrumbsItem__link_first {
+    color: var(--kaoru-default);
+}
+
+.breadcrumbsItem__link {
+    color: var(--gendo-default);
+    text-decoration: none;
+}

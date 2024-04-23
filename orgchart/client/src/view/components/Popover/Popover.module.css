@@ -1,7 +1,6 @@
 .popoverContainer{
     width: 100%;
-    border-radius: 15px;
-    padding: 15px 0 15px 0;
+    border-radius: 10px;
     background-color: var(--shinji);
     border: 1px solid var(--gendo-default);
     display: flex;
@@ -10,13 +9,13 @@
 }
 
 .popoverItemArea {
-
     transition: all 0.1s ease-in;
     box-sizing: content-box;
-
     padding: 10px;
 }
 
 .popoverItemArea:hover{
     background-color: var(--ayanami-20);
+    border-radius: 10px;
+    cursor: pointer;
 }

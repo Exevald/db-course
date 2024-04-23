@@ -4,8 +4,10 @@ const serviceUrl = "http://localhost:8882"
  *  Pages routes
  */
 const branchListUrl = "/"
-const branchInfoUrl = "/branch/BRANCH_ID"
-const employeeInfoUrl = "/employee/EMPLOYEE_ID"
+const branchInfoUrl = "/branch?branchId=BRANCH_ID"
+const employeeInfoUrl = "/employee?employeeId=EMPLOYEE_ID"
+const createBranchUrl = "/branch/create"
+const crateEmployeeUrl = "/employee/create"
 
 /**
  * Page data API routes
@@ -17,14 +19,15 @@ const getEmployeeInfoAPIUrl = serviceUrl + "/api/v1/orgchart/employee/EMPLOYEE_I
 /**
  * API routes
  */
-const createBranchUrl = serviceUrl + "/api/v1/orgchart/branch/create"
-const createEmployeeUrl = serviceUrl + "/api/v1/orgchart/employee/create"
-const updateBranchInfoUrl = serviceUrl + "/api/v1/orgchart/branch/BRANCH_ID/update"
-const updateEmployeeInfoUrl = serviceUrl + "/api/v1/orgchart/employee/EMPLOYEE_ID/update"
-const deleteBranchUrl = serviceUrl + "/api/v1/orgchart/branch/BRANCH_ID/delete"
-const deleteEmployeeUrl = serviceUrl + "/api/v1/orgchart/employee/EMPLOYEE_ID/delete"
+const createBranchAPIUrl = serviceUrl + "/api/v1/orgchart/branch/create"
+const createEmployeeAPIUrl = serviceUrl + "/api/v1/orgchart/employee/create"
+const updateBranchInfoAPIUrl = serviceUrl + "/api/v1/orgchart/branch/BRANCH_ID/update"
+const updateEmployeeInfoAPIUrl = serviceUrl + "/api/v1/orgchart/employee/EMPLOYEE_ID/update"
+const deleteBranchAPIUrl = serviceUrl + "/api/v1/orgchart/branch/BRANCH_ID/delete"
+const deleteEmployeeAPIUrl = serviceUrl + "/api/v1/orgchart/employee/EMPLOYEE_ID/delete"
 
 export {
     branchListUrl, branchInfoUrl, employeeInfoUrl, getBranchListAPIUrl, getBranchInfoAPIUrl, getEmployeeInfoAPIUrl,
-    createBranchUrl, createEmployeeUrl, updateBranchInfoUrl, updateEmployeeInfoUrl, deleteBranchUrl, deleteEmployeeUrl
+    createBranchAPIUrl, createEmployeeAPIUrl, updateBranchInfoAPIUrl, updateEmployeeInfoAPIUrl, deleteBranchAPIUrl,
+    deleteEmployeeAPIUrl, createBranchUrl, crateEmployeeUrl
 }

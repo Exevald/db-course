@@ -196,6 +196,7 @@ type EmployeeRepository interface {
 	Store(employee Employee) error
 	Delete(id uuid.UUID) error
 	ListBranchEmployees(branchID uuid.UUID) ([]Employee, error)
+	GetCountOfBranchEmployees(branchID uuid.UUID) (int, error)
 }
 
 func isGenderValid(gender Gender) bool {

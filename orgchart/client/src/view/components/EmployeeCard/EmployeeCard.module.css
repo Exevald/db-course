@@ -1,0 +1,36 @@
+.employeeCard {
+    width: 680px;
+    border-bottom: 2px solid var(--ayanami-20);
+    background-color: var(--shinji);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+.employeeCard__info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.iconContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.1s ease-in;
+    border-radius: 10px;
+    position: relative;
+    padding: 10px;
+}
+
+.iconContainer:hover{
+    background-color: var(--kaoru-20);
+}
+
+.popover{
+    position: absolute;
+    top: 50px;
+    width: 200px;
+}

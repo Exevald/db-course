@@ -68,6 +68,7 @@ func serveHTTP(
 		router.PathPrefix("/api/v1/orgchart").Handler(orgchartpublic.Handler(publicAPIHandler))
 		corsWrapper := cors.New(cors.Options{
 			AllowedOrigins: []string{"http://localhost:3000"},
+			AllowedMethods: []string{"GET", "POST", "PATCH", "DELETE"},
 		})
 		httpServer = &http.Server{
 			Handler:           corsWrapper.Handler(router),

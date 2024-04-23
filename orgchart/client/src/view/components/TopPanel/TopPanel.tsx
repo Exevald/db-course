@@ -1,12 +1,11 @@
 import styles from "./TopPanel.module.css"
-import logo from "./LogoArea.svg"
-import {Link} from "react-router-dom";
+import logo from "../../images/icons/logo.svg"
 
 const LogoArea = () => {
     return (
-        <Link to={"/"}>
+        <a href={"/"}>
             <img src={logo} alt={"Main logo"} loading={"lazy"} className={styles.logoArea}/>
-        </Link>
+        </a>
     )
 }
 

@@ -1,0 +1,37 @@
+.branchInfoBlock__wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    margin-left: 18%;
+    gap: 25px;
+}
+
+.branchInfoBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 780px;
+    max-height: 310px;
+    border-bottom: 1px solid var(--ayanami-20);
+    background-color: var(--shinji);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    padding: 32px 40px;
+}
+
+.branchInfoBlock__title {
+    font-size: 20px;
+    color: var(--gendo-default);
+}
+
+.branchInfoBlock__paramRows {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.branchInfoBlock__row {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}

@@ -204,6 +204,24 @@ func (e employeeRepository) ListBranchEmployees(branchID uuid.UUID) ([]model.Emp
 	return employeeList, nil
 }
 
+func (e employeeRepository) GetCountOfBranchEmployees(branchID uuid.UUID) (int, error) {
+	const sqlQuery = `SELECT COUNT(*) 
+					  FROM employee e
+					  INNER JOIN branch b ON e.branch_id = b.branch_id
+					  WHERE b.branch_id = ?
+					 `
+	binaryID, err := branchID.MarshalBinary()
+	if err != nil {
+		return 0, errors.WithStack(err)
+	}
+	var count int
+	row := e.client.QueryRow(sqlQuery, binaryID)
+	if err := row.Scan(&count); err != nil {
+		return 0, errors.WithStack(err)
+	}
+	return count, nil
+}
+
 type sqlEmployee struct {
 	employeeID []byte    `db:"employee_id"`
 	branchID   []byte    `db:"branch_id"`
