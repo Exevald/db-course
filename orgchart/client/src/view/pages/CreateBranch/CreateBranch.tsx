@@ -22,7 +22,7 @@ const CreateBranch = () => {
     ]
     return (
         <div>
-            <TopPanel></TopPanel>
+            <TopPanel/>
             <div className={styles.branchInfoBlock__wrapper}>
                 <Breadcrumbs items={breadcrumbsItems}/>
                 <div className={styles.branchInfoBlock}>

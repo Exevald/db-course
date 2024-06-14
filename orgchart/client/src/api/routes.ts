@@ -7,7 +7,7 @@ const branchListUrl = "/"
 const branchInfoUrl = "/branch?branchId=BRANCH_ID"
 const employeeInfoUrl = "/employee?employeeId=EMPLOYEE_ID"
 const createBranchUrl = "/branch/create"
-const crateEmployeeUrl = "/employee/create"
+const crateEmployeeUrl = "/employee/create?branchId=BRANCH_ID"
 
 /**
  * Page data API routes
