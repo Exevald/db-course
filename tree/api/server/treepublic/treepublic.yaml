@@ -1,0 +1,296 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: TreeOfLife public API
+  x-api-identifier: TreeOfLife
+paths:
+  /api/v1/tree/node/{nodeId}:
+    get:
+      operationId: GetNode
+      parameters:
+        - in: path
+          name: nodeId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNodeResponseData'
+          description: OK
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+  /api/v1/tree:
+    get:
+      operationId: GetTree
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTreeResponseData'
+          description: OK
+  /api/v1/tree/subtree/{subTreeId}:
+    get:
+      operationId: GetSubTree
+      parameters:
+        - in: path
+          name: subTreeId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTreeResponseData'
+          description: OK
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+  /api/v1/tree/node/path/{nodeId}:
+    get:
+      operationId: GetNodePath
+      parameters:
+        - in: path
+          name: nodeId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNodePathResponseData'
+          description: OK
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+  /api/v1/tree/parent/{parentNodeId}:
+    get:
+      operationId: GetParentNode
+      parameters:
+        - in: path
+          name: parentNodeId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetParentNodeResponseData'
+          description: OK
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+  /api/v1/tree/children/{nodeId}:
+    get:
+      operationId: GetChildren
+      parameters:
+        - in: path
+          name: nodeId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChildrenResponseData'
+          description: OK
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+  /api/v1/tree/save:
+    post:
+      operationId: SaveTree
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveTreeRequestData'
+      responses:
+        '200':
+          description: Successfully created
+        '400':
+          $ref: '#/components/responses/badRequest'
+  /api/v1/tree/node/add/{nodeId}:
+    post:
+      operationId: AddNode
+      parameters:
+        - in: path
+          name: nodeId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddNodeRequestData'
+      responses:
+        '200':
+          description: Successfully created
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+  /api/v1/tree/subtree/move/{subTreeId}/{newParentId}:
+    post:
+      operationId: MoveSubTree
+      parameters:
+        - in: path
+          name: subTreeId
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: newParentId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully moved
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+  /api/v1/tree/subtree/delete/{subTreeId}:
+    delete:
+      operationId: DeleteSubTree
+      parameters:
+        - in: path
+          name: subTreeId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '404':
+          $ref: '#/components/responses/notFound'
+components:
+  responses:
+    badRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/badRequestResponseData'
+      description: BadRequest
+    notFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/notFoundResponseData'
+      description: NotFound
+  schemas:
+    badRequestResponseData:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - InvalidNodeId
+            - InvalidParentId
+            - InvalidTreeNode
+            - InvalidEntityName
+            - InvalidEntityConfidence
+        message:
+          type: string
+      required:
+        - code
+        - message
+    notFoundResponseData:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - TreeNodeNotFound
+        message:
+          type: string
+      required:
+        - code
+        - message
+    SaveTreeRequestData:
+      $ref: '#/components/schemas/TreeOfLifeNode'
+    AddNodeRequestData:
+      $ref: '#/components/schemas/TreeOfLifeNodeData'
+    GetNodeResponseData:
+      $ref: '#/components/schemas/TreeOfLifeNodeData'
+    GetTreeResponseData:
+      $ref: '#/components/schemas/TreeOfLifeNode'
+    GetSubTreeResponseData:
+      $ref: '#/components/schemas/TreeOfLifeNode'
+    GetNodePathResponseData:
+      type: object
+      properties:
+        nodePath:
+          $ref: '#/components/schemas/NodePath'
+    GetParentNodeResponseData:
+      $ref: '#/components/schemas/TreeOfLifeNodeData'
+    GetChildrenResponseData:
+      $ref: '#/components/schemas/Children'
+    TreeOfLifeNodeData:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        extinct:
+          type: boolean
+        confidence:
+          type: integer
+      required:
+        - id
+        - name
+        - extinct
+        - confidence
+    TreeOfLifeNode:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        extinct:
+          type: boolean
+        parentId:
+          type: integer
+        children:
+          $ref: '#/components/schemas/Children'
+      required:
+        - id
+        - name
+        - extinct
+        - children
+        - children
+    NodePath:
+      type: array
+      items:
+        $ref: '#/components/schemas/Path'
+    Path:
+      type: string
+    Children:
+      type: array
+      items:
+        $ref: '#/components/schemas/TreeOfLifeNode'
