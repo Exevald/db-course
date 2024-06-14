@@ -234,6 +234,7 @@ func (p publicAPI) UpdateEmployeeInfo(_ context.Context, request orgchartpublic.
 
 func mapEmployeeModelToAPI(employee model.Employee) orgchartpublic.EmployeePreview {
 	return orgchartpublic.EmployeePreview{
+		EmployeeId: employee.EmployeeID().String(),
 		FirstName:  employee.FirstName(),
 		LastName:   employee.LastName(),
 		MiddleName: employee.MiddleName(),
