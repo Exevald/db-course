@@ -1,4 +1,4 @@
-.branchInfoBlock__wrapper {
+.employeeInfoBlock__wrapper {
     display: flex;
     flex-direction: column;
     margin-top: 50px;
@@ -6,31 +6,31 @@
     gap: 25px;
 }
 
-.branchInfoBlock {
+.employeeInfoBlock {
     display: flex;
     flex-direction: column;
     gap: 40px;
     max-width: 780px;
     border-bottom: 1px solid var(--ayanami-20);
     background-color: var(--shinji);
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     padding: 32px 40px;
 }
 
-.branchInfoBlock__title {
+.employeeInfoBlock__title {
     font-size: 20px;
     color: var(--gendo-default);
 }
 
-.branchInfoBlock__paramRows {
+.employeeInfoBlock__paramRows {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.branchInfoBlock__row {
-    display: flex;
+.employeeInfoBlock__row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 3fr;
     align-items: center;
-    gap: 60px;
 }

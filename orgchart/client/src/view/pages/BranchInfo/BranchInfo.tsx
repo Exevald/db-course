@@ -17,19 +17,8 @@ interface BranchInfoProps {
     branchId: string
 }
 
-const sideBar: SideBarWrapperProps = {
-    Elements: [{
-        ElementType: ButtonTypes.Icon,
-        icon: <AddIcon/>,
-        active: true,
-        linked: true,
-        url: crateEmployeeUrl
-    }]
-}
-
 const BranchInfo = (props: BranchInfoProps) => {
     const [data, setData] = useState<Branch>()
-    const [employee, setEmployees] = useState<ReactElement[]>([])
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         setLoading(true)
@@ -52,6 +41,15 @@ const BranchInfo = (props: BranchInfoProps) => {
                 index: 0
             }
         ]
+    }
+    const sideBar: SideBarWrapperProps = {
+        Elements: [{
+            ElementType: ButtonTypes.Icon,
+            icon: <AddIcon/>,
+            active: true,
+            linked: true,
+            url: crateEmployeeUrl.replace("BRANCH_ID", props.branchId)
+        }]
     }
     let employeeCards = data?.employees.map((employee, index) => {
         return <EmployeeCard
