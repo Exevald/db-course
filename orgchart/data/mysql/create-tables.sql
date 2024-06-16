@@ -1,4 +1,4 @@
-CREATE TABLE branch
+CREATE TABLE IF NOT EXISTS branch
 (
     `branch_id` BINARY(16) NOT NULL,
     `city`      VARCHAR(100) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE branch
     COLLATE utf8mb4_unicode_ci
 ;
 
-CREATE TABLE employee
+CREATE TABLE IF NOT EXISTS employee
 (
     `employee_id` BINARY(16) NOT NULL,
     `branch_id`   BINARY(16) NOT NULL,

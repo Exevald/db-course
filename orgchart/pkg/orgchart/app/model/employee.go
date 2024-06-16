@@ -208,7 +208,7 @@ func isGenderValid(gender Gender) bool {
 
 func isDateValid(date time.Time) bool {
 	now := time.Now()
-	if date.After(now) || date.IsZero() {
+	if date.Before(now) || date.IsZero() {
 		return false
 	}
 	return true

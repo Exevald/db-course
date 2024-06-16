@@ -164,6 +164,7 @@ func (p publicAPI) GetEmployeeInfo(_ context.Context, request orgchartpublic.Get
 	employee, err := p.employeeService.GetEmployeeInfo(employeeID)
 	return orgchartpublic.GetEmployeeInfo200JSONResponse{
 		EmployeeId: employeeID.String(),
+		BranchId:   employee.BranchID().String(),
 		FirstName:  employee.FirstName(),
 		LastName:   employee.LastName(),
 		MiddleName: employee.MiddleName(),

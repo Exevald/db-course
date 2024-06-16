@@ -2,13 +2,13 @@ package employee
 
 import (
 	"database/sql"
+	"orgchart/pkg/common/mysql"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 
 	"orgchart/pkg/orgchart/app/model"
-	"orgchart/pkg/orgchart/common/mysql"
 )
 
 func NewEmployeeRepository(client mysql.Client) model.EmployeeRepository {

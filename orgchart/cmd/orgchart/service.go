@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"net/http"
+	"orgchart/pkg/common/server"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -12,7 +13,6 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"orgchart/api/server/orgchartpublic"
-	"orgchart/pkg/orgchart/common/server"
 	"orgchart/pkg/orgchart/infrastructure"
 	"orgchart/pkg/orgchart/infrastructure/transport/common"
 	"orgchart/pkg/orgchart/infrastructure/transport/publicapi"

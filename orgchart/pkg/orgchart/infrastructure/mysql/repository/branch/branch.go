@@ -2,12 +2,12 @@ package branch
 
 import (
 	"database/sql"
+	"orgchart/pkg/common/mysql"
 
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 
 	"orgchart/pkg/orgchart/app/model"
-	"orgchart/pkg/orgchart/common/mysql"
 )
 
 func NewBranchRepository(client mysql.Client) model.BranchRepository {

@@ -12,7 +12,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 
-	"orgchart/pkg/orgchart/common/mysql"
+	"orgchart/pkg/common/mysql"
 	"orgchart/pkg/orgchart/infrastructure"
 )
 

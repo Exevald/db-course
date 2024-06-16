@@ -3,12 +3,11 @@ package common
 import (
 	"context"
 	"net/http"
+	"orgchart/pkg/common/logging"
 	"time"
 
 	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 	log "github.com/sirupsen/logrus"
-
-	"orgchart/pkg/orgchart/common/logging"
 )
 
 func NewLoggingMiddleware(logger *log.Logger) strictnethttp.StrictHTTPMiddlewareFunc {

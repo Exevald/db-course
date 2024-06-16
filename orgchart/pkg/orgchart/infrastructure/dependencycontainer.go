@@ -1,8 +1,8 @@
 package infrastructure
 
 import (
+	"orgchart/pkg/common/mysql"
 	"orgchart/pkg/orgchart/app/service"
-	"orgchart/pkg/orgchart/common/mysql"
 	"orgchart/pkg/orgchart/infrastructure/mysql/repository/branch"
 	"orgchart/pkg/orgchart/infrastructure/mysql/repository/employee"
 )
