@@ -101,3 +101,9 @@ func (t *treeNode) ParentNodeID() int64 {
 func (t *treeNode) Children() []*TreeNode {
 	return t.children
 }
+
+type TreeNodeRepository interface {
+	Get(id int64) (TreeNode, error)
+	Store(treeNode TreeNode) error
+	Delete(id int64) error
+}
