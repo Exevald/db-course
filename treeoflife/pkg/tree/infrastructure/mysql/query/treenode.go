@@ -1,14 +1,11 @@
 package query
 
-import "trees/pkg/tree/domain/model"
+import (
+	"tree/pkg/tree/app/query"
+	"tree/pkg/tree/domain/model"
+)
 
-type TreeNodeQueryService interface {
-	GetTree() (model.TreeNode, error)
-	GetSubTree(nodeID int64) (model.TreeNode, error)
-	GetChildren(nodeID int64) ([]model.TreeNode, error)
-}
-
-func NewTreeNodeQueryService() TreeNodeQueryService {
+func NewTreeNodeQueryService() query.TreeNodeQueryService {
 	return &treeNodeQueryService{}
 }
 

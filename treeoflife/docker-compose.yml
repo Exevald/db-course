@@ -3,7 +3,7 @@ version: '3.3'
 services:
   tree-dev:
     image: tree
-    container_name: tree-dev
+    container_name: treeoflife-dev
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,9 +11,9 @@ services:
       - "8881:8081" # GRPC API port
       - "8882:8082" # GRPC-Gateway REST API port
     environment:
-      tree_DB_HOST: tree-db-dev:3306
-      tree_DB_NAME: tree
-      tree_DB_USER: tree
+      tree_DB_HOST: treeoflife-db-dev:3306
+      tree_DB_NAME: treeoflife
+      tree_DB_USER: treeoflife
       tree_DB_PASSWORD: LxilKD9Pbe
       # Coupled with MySQL 'max_connections' option: must be 'max_connections - 5'
       tree_DB_MAX_CONN: 5
@@ -21,14 +21,14 @@ services:
       - tree-db-dev
   tree-db-dev:
     image: mysql:8.0.32
-    container_name: tree-db-dev
+    container_name: treeoflife-db-dev
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: tree
-      MYSQL_USER: tree
+      MYSQL_DATABASE: treeoflife
+      MYSQL_USER: treeoflife
       MYSQL_PASSWORD: LxilKD9Pbe
     volumes:
-      - "tree-db-dev-data:/var/lib/mysql"
+      - "treeoflife-db-dev-data:/var/lib/mysql"
       - "${PWD}/data/mysql/config/:/etc/my.cnf.d"
 
 

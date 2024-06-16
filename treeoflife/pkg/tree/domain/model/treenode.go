@@ -7,9 +7,9 @@ import (
 )
 
 var (
-	ErrTreeNodeNotFound        = stderrors.New("tree node not found")
+	ErrTreeNodeNotFound        = stderrors.New("treeoflife node not found")
 	ErrInvalidNodeId           = stderrors.New("invalid node id")
-	ErrInvalidTreeNode         = stderrors.New("invalid tree node")
+	ErrInvalidTreeNode         = stderrors.New("invalid treeoflife node")
 	ErrInvalidEntityName       = stderrors.New("invalid entity node name")
 	ErrInvalidEntityConfidence = stderrors.New("invalid entity confidence")
 	ErrInvalidParentId         = stderrors.New("invalid parent id")

@@ -1,18 +1,18 @@
 package service
 
-import "trees/pkg/tree/domain/model"
+import "tree/pkg/tree/domain/model"
 
-type TreeService interface {
+type TreeNodeService interface {
 	SaveTree(root model.TreeNode) error
 	AddNode(node model.NodeData, parentID int64) error
 	MoveSubTree(treeNodeID int64, newParentID int64) error
 	DeleteSubTree(treeNodeID int64) error
 }
 
-func NewTreeService(
+func NewTreeNodeService(
 	treeNodeRepository model.TreeNodeRepository,
 	nodeDataRepository model.NodeDataRepository,
-) TreeService {
+) TreeNodeService {
 	return &treeService{
 		treeNodeRepository: treeNodeRepository,
 		nodeDataRepository: nodeDataRepository,

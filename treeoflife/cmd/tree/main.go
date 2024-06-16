@@ -12,7 +12,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 
-	"trees/pkg/tree/common/mysql"
+	"tree/pkg/tree/common/mysql"
+	"tree/pkg/tree/infrastructure"
 )
 
 const appName = "treeOfLife"
@@ -38,8 +39,10 @@ func runApp(ctx context.Context, config *config, logger *log.Logger) error {
 	ctx = listenOSKillSignals(ctx)
 
 	app := cli.App{
-		Name:     appName,
-		Commands: []*cli.Command{},
+		Name: appName,
+		Commands: []*cli.Command{
+			service(config, logger),
+		},
 	}
 	err := app.RunContext(ctx, os.Args)
 	return err
@@ -60,6 +63,14 @@ func newConnectionsContainer(config *config) (*connectionsContainer, error) {
 		return nil
 	}
 	return container, containerBuilder()
+}
+
+func newDependencyContainer(config *config) (*infrastructure.DependencyContainer, error) {
+	connectionsContainer, err := newConnectionsContainer(config)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to initialize connections container")
+	}
+	return infrastructure.NewDependencyContainer(connectionsContainer.connector)
 }
 
 func newDatabaseConnector(config *config) (mysql.Connector, error) {
